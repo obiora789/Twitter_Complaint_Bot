@@ -1,4 +1,4 @@
-<h1>Twitter_Complaint_Bot</h1>
+<h1>Twitter Complaint Bot</h1>
 This program uses Selenium to automatically run Internet speed tests, and inform the ISP when the link is below advertised/optimal performance. <br>
 
 <h2>Requirements</h2>
