@@ -13,7 +13,7 @@ import random
 new_file = dotenv.find_dotenv()
 dotenv.load_dotenv(new_file)
 CHROME_DRIVER = os.environ.get("CHROME_PATH")
-ISP = os.environ.get("ISP")
+ISP = None
 TWITTER_URL = "https://twitter.com"
 SPEEDTEST_URL = "https://www.speedtest.net"
 SHORT = 3  # Amount of delay in seconds to be used
@@ -60,7 +60,8 @@ class InternetSpeedTwitterBot:
             self.driver.get(url=SPEEDTEST_URL)
             time.sleep(DELAY + DELAY)
             self.mouse_pointer = ActionChains(self.driver)
-            WebDriverWait(self.driver, DELAY*6).until(ec.element_to_be_clickable(self.driver.find_element(By.CSS_SELECTOR, ".js-start-test .start-text")))
+            WebDriverWait(self.driver, DELAY*6).until(ec.element_to_be_clickable(
+                self.driver.find_element(By.CSS_SELECTOR, ".js-start-test .start-text")))
             self.isp_name = self.driver.find_element(By.CSS_SELECTOR, ".ispComponent .result-label").text
             print(self.isp_name)
             # Locate the speedtest button
@@ -75,7 +76,8 @@ class InternetSpeedTwitterBot:
                 up_value = up.get_attribute("data-upload-status-value")    # Tracks completion of Speedtest
                 try:
                     if float(up_value) >= 0:   # becomes true when up_value becomes a number
-                        self.down = self.driver.find_element(By.CSS_SELECTOR, ".result-item-download .download-speed").text
+                        self.down = self.driver.find_element(By.CSS_SELECTOR, ".result-item-download "
+                                                                              ".download-speed").text
                         self.up = self.driver.find_element(By.CSS_SELECTOR, ".result-item-upload .upload-speed").text
                 except ValueError:
                     pass
@@ -93,7 +95,8 @@ class InternetSpeedTwitterBot:
             self.login_details(self.twitter_user)    # Enter Twitter Username
             self.login_details(self.twitter_pass)    # Enter Twitter Password
             # Locate the tweet button and wait for it to be clickable
-            WebDriverWait(self.driver, DELAY*6).until(ec.element_to_be_clickable(self.driver.find_element(By.CSS_SELECTOR, ".r-42olwf .r-jwli3a")))
+            WebDriverWait(self.driver, DELAY*6).until(ec.element_to_be_clickable(
+                self.driver.find_element(By.CSS_SELECTOR, ".r-42olwf .r-jwli3a")))
             to_tweet = self.driver.find_element(By.CSS_SELECTOR, ".r-42olwf .r-jwli3a")
             self.mouse_pointer.click(on_element=to_tweet).perform()    # Click it
             time.sleep(generate_random_time(DELAY+DELAY))
@@ -119,10 +122,12 @@ class InternetSpeedTwitterBot:
 twitter_bot = InternetSpeedTwitterBot()
 twitter_bot.get_internet_speed()
 if twitter_bot.isp_name == "Airtel":
-    promised_up = 10  # Upload speed(Mbps) advertised by ISP
-    promised_down = 35  # Download speed(Mbps) advertised by ISP
+    ISP = os.environ.get("ISP1")
+    promised_up = int(os.environ.get("ISP1_PROMISED_UP"))  # Upload speed(Mbps) advertised by ISP
+    promised_down = int(os.environ.get("ISP1_PROMISED_DOWN"))  # Download speed(Mbps) advertised by ISP
 elif twitter_bot.isp_name == "Tizeti":
-    promised_down = 5   # Download speed(Mbps) advertised by ISP
-    promised_up = 1   # Upload speed(Mbps) advertised by ISP
+    ISP = os.environ.get("ISP2")
+    promised_down = int(os.environ.get("ISP2_PROMISED_DOWN"))   # Download speed(Mbps) advertised by ISP
+    promised_up = int(os.environ.get("ISP2_PROMISED_UP"))   # Upload speed(Mbps) advertised by ISP
 if float(twitter_bot.down) < promised_down or float(twitter_bot.up) < promised_up:
     twitter_bot.tweet_at_provider()
