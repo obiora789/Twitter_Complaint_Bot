@@ -4,6 +4,7 @@ This program uses Selenium to automatically run Internet speed tests, and inform
 <h2>Requirements</h2>
 <ul>
   <li>Python 3.8 or higher.</li>
+  <li>Pycharm 2022.3.2 or higher.</li>
   <li>Selenium Webdriver(Chrome)</li>
   <li>Install and import Selenium Web driver.</li>
 </ul>
@@ -11,7 +12,10 @@ This program uses Selenium to automatically run Internet speed tests, and inform
 <h3>What to do</h3>
 <ol>
   <li>Fork this Git and clone to your local PC.</li>
-  <li>Download the webdriver for your browser(I use Chrome).</li>
+  <li>Download the selenium webdriver for your browser(I use Chrome i.e., chromedriver).</li>
+  <li>Ensure you have updated Pycharm or other good updated IDE. I used Pycharm 2022.3.2 (Community Edition).</li>
+  <li>Install Selenium undetected chromedriver within Pycharm console. e.g., pip install selenium</li>
+  <li>Install python-dotenv within Pycharm console to translate environment variables. e.g., pip install python-dotenv</li>
   <li>Populate the environment variable with the actual path of your Selenium Chrome Webdriver.</li>
   <li>Specify your twitter username and password as environment variables.</li>
   <li>Specify the twitter handles of your main ISP and backup ISP as environment variables.</li>
